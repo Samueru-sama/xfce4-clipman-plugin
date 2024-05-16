@@ -105,18 +105,6 @@ status_icon_register (void)
   /* Menu Position Func */
   plugin->menu_position_func = (GtkMenuPositionFunc)gtk_status_icon_position_menu;
 
-  /* Status Icon */
-  if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), "clipman"))
-    {
-      plugin->status_icon = gtk_status_icon_new_from_icon_name ("clipman");
-    }
-  else
-    {
-      plugin->status_icon = gtk_status_icon_new_from_icon_name ("edit-paste");
-    }
-  gtk_status_icon_set_tooltip_text (plugin->status_icon, _("Clipman"));
-  g_timeout_add_seconds (60, cb_status_icon_is_embedded, plugin->status_icon);
-
   /* Signals */
   g_signal_connect_swapped (plugin->status_icon, "activate",
                             G_CALLBACK (cb_status_icon_activate), plugin);
