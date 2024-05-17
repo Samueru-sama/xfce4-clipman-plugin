@@ -38,7 +38,7 @@ fi
 EOF
 chmod a+x ./AppRun
 
-APPVERSION=git
+APPVERSION=notray
 
 # Do the thing!
 cd ..
