@@ -1,3 +1,11 @@
+# READ THIS
+
+This is a fork that gets rid of the systray icon in clipman, by default clipman will quit if there is no systray after 60 seconds. 
+
+There is also a appimage script that builds a statically linked clipman in an appimage, however I can't get the xfce4-dev tools to work in the ubuntu runner (the script works perfectly on my artix pc as the xfce4-dev tools don't complain here).
+
+
+
 [![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.xfce.org/panel-plugins/xfce4-clipman-plugin/-/blob/master/COPYING)
 
 # xfce4-clipman-plugin
