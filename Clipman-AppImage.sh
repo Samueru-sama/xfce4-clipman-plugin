@@ -35,6 +35,9 @@ elif [ "$1" = "popup" ]; then
 	"$CURRENTDIR"/bin/xfce4-popup-clipman "${@:2}"
 elif [ "$1" = "start" ]; then
 	 "$CURRENTDIR"/bin/xfce4-clipman "${@:2}"
+else
+	echo "Options are: 'history' 'settings' 'popup' and 'start'"
+	echo "Use 'start' to start clipman daemon in the backgroud"
 fi
 
 EOF
