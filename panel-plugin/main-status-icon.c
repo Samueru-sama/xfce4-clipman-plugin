@@ -86,12 +86,6 @@ static gboolean
 cb_status_icon_is_embedded (gpointer user_data)
 {
   GtkStatusIcon *status_icon = user_data;
-
-  if (!gtk_status_icon_is_embedded (status_icon))
-    {
-      g_warning ("Status Icon is not embedded");
-      gtk_main_quit ();
-    }
   return FALSE;
 }
 
