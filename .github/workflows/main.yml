@@ -17,8 +17,11 @@ jobs:
     - name: build
       run: |
         sudo apt update
-        sudo apt install libfuse2 gcc xfce4-dev-tools
+        sudo apt install libfuse2 gcc
         sudo apt install libncursesw5-dev autotools-dev autoconf automake build-essential meson ninja-build
+        git clone https://archive.xfce.org/src/xfce/xfce4-dev-tools/4.19/xfce4-dev-tools-4.19.0.tar.bz2
+        tar xf xfce*.tar.bz2 && cd xfce4-dev-tools*
+        ./configure && make && make install && cd
         wget https://raw.githubusercontent.com/Samueru-sama/xfce4-clipman-plugin/master/Clipman-AppImage.sh
         chmod a+x ./Clipman-AppImage.sh
         ./Clipman-AppImage.sh
