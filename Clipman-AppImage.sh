@@ -25,14 +25,16 @@ cat >> ./AppRun << 'EOF'
 #!/bin/bash
 
 CURRENTDIR="$(readlink -f "$(dirname "$0")")"
+export PATH="$PATH:$CURRENTDIR/bin"
 
-pgrep xfce4-clipman || "$CURRENTDIR"/bin/xfce4-clipman "${@:2}" || exit
 if [ "$1" = "history" ]; then
 	"$CURRENTDIR"/bin/xfce4-clipman-history "${@:2}"
 elif [ "$1" = "settings" ]; then
 	"$CURRENTDIR"/bin/xfce4-clipman-settings "${@:2}"
-else
+elif [ "$1" = "popup" ]; then
 	"$CURRENTDIR"/bin/xfce4-popup-clipman "${@:2}"
+elif [ "$1" = "start" ]; then
+	 "$CURRENTDIR"/bin/xfce4-clipman "${@:2}"
 fi
 
 EOF
