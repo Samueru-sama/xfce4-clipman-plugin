@@ -9,10 +9,10 @@ mkdir -p ./"$APP" && cd ./"$APP" || exit 1
 
 # DOWNLOAD AND BUILD CLIPMAN STATICALLY
 CURRENTDIR="$(readlink -f "$(dirname "$0")")" # DO NOT MOVE THIS
+CFLAGS='-static -O3'
+LDFLAGS='-static'
 git clone --recursive https://github.com/Samueru-sama/xfce4-clipman-plugin.git \
-&& cd ./xfce4-clipman* && ./autogen.sh && CFLAGS='-static -O3' make \
-&& make install DESTDIR="$CURRENTDIR" || exit 1
-
+&& cd ./xfce4-clipman* && ./autogen.sh && make && make install DESTDIR="$CURRENTDIR" || exit 1
 cd .. && rm -rf ./xfce4-clipman-plugin && mv ./usr/local ./"$APPDIR" && rmdir ./usr || exit 1
 
 # PREPARE APPIMAGE
@@ -20,12 +20,20 @@ cd ./"$APPDIR" && cp ./share/applications/xfce4-clipman.desktop ./xfce4-clipman-
 && cp ./share/icons/hicolor/scalable/apps/*svg ./xfce4-clipman-plugin.svg \
 && ln -s ./*.svg ./.DirIcon || exit 1
 
+# THIS IS A HACK
+LIBSPATH=$(ldd ./bin/xfce4-clipman | awk '{print $3}')
+mkdir ./lib 
+cp $LIBSPATH ./lib
+rm -f ./lib/libc.so* ./lib/libcrypto.so* ./lib/libstdc++.so* ./lib/libgnutls.so* ./lib/ld-linux* \
+./lib/libgio* ./lib/libglib* ./lib/libX11* ./lib/libmvec* ./lib/libm.* ./lib/libsl.* ./lib/libresolv* \
+./lib/libnss* ./lib/libc.so* ./lib/libm.so* ./lib/libBroken* ./lib/libc_malloc*
+
 # AppRun
 cat >> ./AppRun << 'EOF'
 #!/bin/bash
-
-CURRENTDIR="$(readlink -f "$(dirname "$0")")"
+CURRENTDIR="$(dirname "$(readlink -f "$0")")"
 export PATH="$PATH:$CURRENTDIR/bin"
+export LD_LIBRARY_PATH="/lib:/lib64:/usr/lib:/usr/lib64:$CURRENTDIR/lib:$LD_LIBRARY_PATH"
 
 if [ "$1" = "history" ]; then
 	"$CURRENTDIR"/bin/xfce4-clipman-history "${@:2}"
@@ -39,10 +47,8 @@ else
 	echo "Options are: 'history' 'settings' 'popup' and 'start'"
 	echo "Use 'start' to start clipman daemon in the backgroud"
 fi
-
 EOF
 chmod a+x ./AppRun
-
 APPVERSION=notray
 
 # Do the thing!
